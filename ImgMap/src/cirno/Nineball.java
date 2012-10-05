@@ -54,6 +54,10 @@ public class Nineball extends JavaPlugin {
 			if(checkForImgType(args[0], sender)){
 				ItemStack item = getServer().getPlayer(sender.getName()).getItemInHand();
 				if(item.getType() == Material.MAP){
+					// Put this in an AsyncDelayedTask
+					// If you dont do this, large images (or slow download) migth crash server
+					
+					// NOTE: Some variables will have to be 'final'
 					MapView map = Bukkit.getServer().getMap(item.getDurability());
 					if(normalrender != new ImgRenderer()){
 						normalrender = map.getRenderers().get(0);
@@ -62,6 +66,7 @@ public class Nineball extends JavaPlugin {
 					map.addRenderer(new ImgRenderer(args[0]));
 					ds.setMapData(item.getDurability(), args[0]);
 					getServer().getPlayer(sender.getName()).sendMessage(ChatColor.GREEN + "[ImgMap] Now rendering " + args[0]);
+					
 				} else {
 					getServer().getPlayer(sender.getName()).sendMessage(ChatColor.RED + "" + ChatColor.ITALIC + "[ImgMap] That isn't a map item!");
 				}
